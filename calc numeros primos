@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+int main(){
+    int x, n;
+    scanf("%d", &x);
+    if(x<=1) {
+        printf("x não é primo");
+    }
+    else if(x%2==0){
+        if(x==2){
+            printf("x é primo");
+        }
+        else 
+            printf("x não é primo");
+    }
+    else{
+        for(n=3; x>=n; n+=2){
+            if(x%n!=0 || x==3)
+                break;
+            else 
+                printf("x não é primo");
+        }   
+        printf("x é primo");
+    }
+    return 0;
+}
