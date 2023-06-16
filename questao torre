@@ -2,34 +2,50 @@
 
 int main(){
 
-    int n, p, e=0, t=0, h=1;
+    int n, p, e=0, k=0, h=1, qJ=0, qC=0, qB=0; //p serve como o numero da casa; e, k  servem para usar paridade; h serve para ajustar o numero de # quando  o n é pequeno
 
     scanf("%d", &n);
 
     for(p=1;p<=(2*(n*n)-n);p++){
-        if(p>n && ((p-n)%(2*n-2)==0 || (p-n)%(2*n)==0)) {
+        if(p==n){
             printf("&");
+            qJ+=1;
+        }
+        else if(p>n && ((p-n)%(2*n-2)==0 || (p-n)%(2*n)==0)) {
+            printf("&");
+            qJ+=1;
             e++;
         }
         else if(e%2!=0){
-            printf("-");
-            t++;
+            k++;
+            if(k%2!=0){
+                printf("-");
+                qC+=1;
+            }
+            else {
+                printf("&");
+                qJ+=1;
+            }
         }
         else{ 
             printf(".");
         }
+
         if(p%(2*n-1)==0){
             printf("\n");
+            k=0; //resetar o k pra contagem de impar/par sair do jeito que queria
         }
     }
     do{
         h++;
-        if(h<=2)
+        if(h<=2){
             printf("#");
-        else 
+            qB+=1;
+        }
+        else
             printf("##");
+            qB+=2;
     }while(h<=n);
-    
-    printf("\n%d", e);
+    printf("\nO valor total foi: %d\n", (200*qJ)+(50*qC)+(100*(qB-2))); //valor final  (botei qb-2 porque tava dando 2 unidades acima do que eu queria)
     return 0;
 }
