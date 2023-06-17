@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main(){
+    int x, n;
+    char p;
+    scanf("%d", &x);
+    if(x==2){
+        p = 's';
+    }
+    for(n=2; n<x; n++){
+        if(x%n==0){
+            p = 'n';
+            break;
+        }
+        else
+            p  = 's'; 
+    }
+    printf("%c\n", p);
+    return 0;
+}
