@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <math.h>
+int main(){
+    int x, y, a, b=0, k, j, i, iAnterior, r1, r2, resto, mdc;
+    int numero, dPrimo;
+    char tagPrimo;
+    scanf("%d %d", &x, &y);
+    for(; x<=y; x++){
+        iAnterior=i;
+        i=1;
+        for(numero=2; numero<=x; numero++){
+            if(numero==2){
+            tagPrimo = 's';
+            }
+            else{
+                for(dPrimo=2; dPrimo<numero; dPrimo++){
+                    if(numero%dPrimo==0){
+                    tagPrimo = 'n';
+                    break;
+                    }
+                    else
+                        tagPrimo  = 's'; 
+                }
+            }
+            if(tagPrimo=='s' && x%numero==0){
+                j = x;
+                do{ 
+                    k++;
+                    j = j / numero;
+                } while (j%numero==0 && j!=1);
+            }
+            i=i*(k+1);
+            k=0;
+        }
+        if(i>2 && b==0)
+            b=x;
+        if(i>iAnterior)
+            a=x;
+    }
+    
+    r1=b;
+    r2=(a%b);
+    do{
+        resto = (r1%r2);
+        r1 = r2;
+        r2 = resto;
+        mdc = r1;
+    } while (resto!=0);
+    
+    printf("%d %d %d", a, b, mdc);
+    return 0;
+}
+    
