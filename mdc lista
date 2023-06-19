@@ -34,7 +34,7 @@ int main(){
         }
         if(i>2 && b==0)
             b=x;
-        if(i>iAnterior)
+        if(i>iAnterior && i!=2)
             a=x;
     }
     
