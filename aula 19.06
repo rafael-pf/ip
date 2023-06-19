@@ -1,0 +1,32 @@
+#include <stdio.h>
+#define tam 3
+int main(){
+    int v[tam], i, j, tmp, iMenor;
+    for(i=0; i<tam; i++) {
+        printf("Digite o %do elemento do vetor: ", i + 1);
+        scanf("%d", &v[i]);
+    }
+    for(j=0; j<tam; j++){
+        iMenor = j; //hipotese
+        for(i=0; i<tam; i++){
+            if(v[i]<v[iMenor])
+                iMenor = i;
+        }
+       
+    }
+    printf("O menor elemento eh o v[%d]: %d\n", iMenor+1, v[iMenor]);
+    for(j=0; j<tam; j++){
+        iMenor = j; //hipotese
+        for(i=j+1; i<tam; i++){
+            if(v[i]<v[iMenor])
+                iMenor = i;
+        }
+        if(j != iMenor){
+            tmp = v[j];
+            v[j] = v[iMenor];
+            v[iMenor] = tmp;
+        }   
+    }
+    printf("O maior elemento eh o v[%d]: %d\n", iMenor+1, v[iMenor]);
+    return 0;
+}
