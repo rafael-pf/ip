@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+int main(){
+    int n=0, k=0, p=0, i=0, j=0, q=0, primeiro=0;
+    int numero, dPrimo;
+    char tagPrimo;
+    
+    scanf("%d %d %d", &n, &k, &p);
+    for(; n<=k; n++){
+        i=0;
+        for(numero=3; numero<=(n/2) && i>=0; numero++){
+            if(n%numero==0)
+                for(dPrimo=2; dPrimo<numero && i>=0; dPrimo++){
+                    if(numero%dPrimo==0){
+                        tagPrimo = 'n';
+                        break;
+                    }
+                    else{
+                        tagPrimo  = 's';
+                    }
+                }
+                if(tagPrimo=='s'){
+                        i++;
+                        j = n;
+                        j = j / numero;
+                        if(j%numero==0)
+                            i=-1;
+                    }
+        }
+        if(i==p){
+            q++;
+            if(primeiro==0)
+                primeiro=n;
+        }
+    }
+    if(q==0){
+        printf("Poxa dudinha, me desculpa, nao achei os numeros mas vou te mandar uma foto de um gatinho fofo.");
+    }
+    else
+        printf("%d %d", primeiro, q-1);
+     return 0;
+}
+    
+    
