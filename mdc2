@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <math.h>
+int main(){
+    int x, y, a, b=0, k=0, j, kAnterior=0, xAnterior=0, r1, r2, resto, mdc;
+    int numero, dPrimo;
+    char tagPrimo;
+    scanf("%d %d", &x, &y);
+    for(; x<=y; x++){
+        
+        for(numero=1; numero<=x; numero++){
+            if(x%numero==0){
+                k++;
+            }
+        }
+        if(k>2 && b==0)
+            b=x;
+        if(k>kAnterior)
+            a=x;
+        kAnterior=k;
+        xAnterior=x;
+        k=0;
+    }
+    
+    printf("%d %d %d", a, b, mdc);
+    return 0;
+}
+    
