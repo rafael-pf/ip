@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main(){
+    int a, b, x, k=0;
+    scanf("%d %d %d", &a, &b, &x);
+    while(x!=a-1){
+            if(k>1)
+                b=a-b;
+            else  if(k<1)
+                printf("%d\n", b);
+            a=a+b;
+            k++;
+            printf("%d\n", a);
+            
+    }
+    
+    return 0;    
+}
