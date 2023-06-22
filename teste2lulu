@@ -7,7 +7,7 @@ int  main(){
         scanf("%d %d", &a, &b);
         for(p=0; x!=a-p && x!=a+p ; p++){
             while((x!=a-p || x!=a+p) && x<=a+p){
-                if(m>2)
+                if(m>3)
                     b=a-b;
                 a=a+b;
                 m++;
