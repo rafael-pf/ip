@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+int  main(){
+    int x=0, n=0, a=0, b=0, k=0, i=0, m=2, g=0, d=0, p=0, nVIP=0, t=0;
+    scanf("%d %d", &x, &n);
+    for(k=1; k<=n; k++){
+        scanf("%d %d", &a, &b);
+        for(p=0; x!=a-p && x!=a+p ; p++){
+            while((x!=a-p || x!=a+p) && x<=a+p){
+                if(m>2)
+                    b=a-b;
+                a=a+b;
+                m++;
+                if(x==a-p || x==a+p){
+                    g=k; //entrada definitva = entrada atual
+                    t=m; //tempo definitivo = tempo atual
+                    d=p; //distancia definitiva = distancia atual
+                    nVIP=(a/10) +(a%10);
+                }
+            }
+        }
+    }
+    if(nVIP>10){
+        printf("Xupenio, para ir ao lulupalooza vc deve entrar no canal %d e sera chamado mais ou menos no minuto %d e com o VIP garantido!!", g, t);
+    }
+    else{
+        printf("Xupenio, para ir ao lulupalooza vc deve entrar no canal %d e sera chamado mais ou menos no minuto %d, mas o ingresso VIP não vai rolar :(", g, t);
+    }
+    return 0;
+}
