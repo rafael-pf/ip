@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main(){
+    int ai, aj, bi, bj, i=0, j=0;
+    int Va[ai][aj], Vb[bi][bj];
+    scanf("%d %d %d %d", &ai, &aj, &bi, &bj);
+    for(i=0; i<ai; i++){
+        for(j=0; j<aj; j++){
+            scanf("%d", &Va[i][j]);
+        }
+    }
+    for(i=0; i<bi; i++){
+        for(j=0; j<bj; j++){
+            scanf("%d", &Vb[i][j]);
+        }
+    }
+
+    for(i=0; i<ai; i++){
+        for(j=0; j<aj; j++){
+            printf("%4d", Va[i][j]);
+        }
+        printf("\n");
+    }
+    for(i=0; i<bi; i++){
+        for(j=0; j<bj; j++){
+            printf("%4d", Vb[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
