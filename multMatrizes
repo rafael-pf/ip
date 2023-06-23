@@ -2,8 +2,10 @@
 
 int main(){
     int ai, aj, bi, bj, i=0, j=0;
-    int Va[ai][aj], Vb[bi][bj];
     scanf("%d %d %d %d", &ai, &aj, &bi, &bj);
+
+    int Va[ai][aj], Vb[bi][bj];
+
     for(i=0; i<ai; i++){
         for(j=0; j<aj; j++){
             scanf("%d", &Va[i][j]);
