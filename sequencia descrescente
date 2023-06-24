@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+int main(){
+    int T=0, n=0, caso=0, i=0, f=0;
+    scanf("%d", &T);
+    for(caso=1; caso<=T; caso++){
+        scanf("%d", &n);
+        int v[n];
+        for(i=0; i<n; i++){
+            scanf("%d", &v[i]);
+        }
+        for(i=0; i<n; i++){
+            if((v[i]<=v[i+1] && v[i]>=v[i-1]) || (v[i]==v[i+1])){
+                v[i]=0;
+                if(v[n-2]==0)
+                    v[n-1]=0;
+                f++;
+            }
+        }
+        if(v[0]==v[1]){
+            f--;
+        }
+        printf("%d\n", n-f);
+        for(i=0; i<n; i++){
+            if(v[i]!=0){
+                printf("%d ", v[i]);
+            }
+        }
+    }
+    return 0;
+}
