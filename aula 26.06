@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+int main(){
+    char nome[50];
+    printf("Digite um nome: ");
+    scanf(" %[^\n]", nome);
+    // Em alto nivel (abstrato)
+    printf("Nome: %s\n", nome);
+    // Em detalhes (ou baixo nivel)
+    return 0;
+}
