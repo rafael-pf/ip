@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+int main(){
+    // Entrada: Alexandre Mota => Saída: Mota, A. (so 1 string)
+    char nome[50];
+    int pos;
+    printf("Digite um nome: ");
+    scanf(" %49[^\n]", nome);
+    for(pos=0; nome[pos]!=' '; pos++);
+    nome[pos++]='\0';
+    for(; nome[pos]!='\0'; pos++){
+        printf("%c", nome[pos]);
+    }
+    printf(", %c.\n", nome[0]);
+    return 0;
+}
