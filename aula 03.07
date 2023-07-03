@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <string.h>
+typedef int inteiro; //Cria um apelido para um tipo (novo tipo)
+typedef struct {
+    char conteudo[200];
+} String;
+
+typedef struct {
+            String nome;
+            int idade;
+            float altura;
+            char sexo;
+        } Pessoa;
+
+int main(){ 
+    Pessoa umaPessoa, outraPessoa;
+    scanf(" %199[^\n]",umaPessoa.nome.conteudo);
+    printf("Sexo: %c\n", umaPessoa.sexo);
+    umaPessoa.sexo = 'M';
+    umaPessoa.idade = 52;
+    umaPessoa.altura = 1.82;
+    outraPessoa = umaPessoa;   
+    return 0;
+}
