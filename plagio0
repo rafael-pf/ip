@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(){
+    char text1[5050], text2[5050], aux[5050], matriz1[50][100]={}, matriz2[50][100]={};
+    int i=0, j=0, k=0, qtdP1=0, pLetra=0, pPlagiadas=0;
+    
+    scanf("%[^\n]", text1);
+
+    for(i=0; text1[i]!='\n';i++){   //bloco para jogar cada palavra para uma linha diferente de uma matriz
+        if(text1[i]!=' '){
+            matriz1[j][k]=text1[i];  
+            k++;
+        }
+        else if(text1[i]==' ' || text1[i]=='\n'){
+            j++;
+            k=0;
+            qtdP1++;
+        }
+    }
+    
+    
+    for(i=0; i<qtdP1; i++){
+        for(j=0; j<strlen(matriz1[i]); j++){
+            printf("%c", matriz1[i][j]);
+        }
+        printf("\n");
+    }
+    
+   
+
+    
+    return 0;
+}
