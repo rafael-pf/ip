@@ -53,11 +53,11 @@ Linha *preencheMatriz(int *qtdLinhas){
         for(i=0; i<*qtdLinhas; i++){
             if(l==mat[i].linha){
                 tag_acheiL=1;
-                printf("Achei a linha\n");
+                //printf("Achei a linha\n");
                 for(j=0; j<mat[i].qtdCol; j++){
-                    tag_acheiC=1;
                     if(c==mat[i].pont[j].col){
-                        printf("Achei a coluna\n");
+                        tag_acheiC=1;
+                        //printf("Achei a coluna\n");
                         mat[i].pont[j].valor = v;
                     }
                 }
@@ -98,20 +98,35 @@ Linha *preencheMatriz(int *qtdLinhas){
             
         }
 
-         
-
-
-
         printf("Deseja continuar? Digite sim ou nao\n");
         scanf(" %s", comando);
     }
-    
-    //printf("linha 1: %d\ncoluna 1: %d\nvalor 1,1: %.1f\n", (*mat).linha, (*mat).pont[0].col, (*mat).pont[0].valor);
-
-    
 
 
     return mat;
+}
+
+void printMatriz(Linha *matriz, int qtdLinhas){
+    int i=0, j=0;
+    int maiorLinha=0;
+    for(i=0; i<qtdLinhas; i++){
+        if(matriz[i].qtdCol>maiorLinha){
+            maiorLinha=matriz[i].qtdCol;
+        }
+    }
+
+    printf("Aqui esta sua matriz esparsa: \n");
+
+    for(i=0; i<qtdLinhas; i++){
+        printf("linha %d: ", i+1);
+        for(j=0; j<matriz[i].qtdCol; j++){
+            printf("%.1f    ", matriz[i].pont[j].valor);
+        }
+        for(j=0; j<maiorLinha-matriz[i].qtdCol; j++){
+            printf("0    ");
+        }
+        printf("\n\n");
+    }
 }
 
 int main(){
@@ -124,15 +139,16 @@ int main(){
     printf("Vamos preencher a matriz...\n");
     matriz = preencheMatriz(&qtdLinhas);
 
-    for(i=0; i<qtdLinhas; i++){
-        for(j=0; j<matriz[i].qtdCol; j++){
-            printf("linha %d: %d\ncoluna %d: %d\nvalor %d,%d: %.1f\n", i+1, matriz[i].linha, j+1, matriz[i].pont[j].col, i+1, j+1, matriz[i].pont[j].valor);
-        }
-        printf("\n");
-    }
+    printMatriz(matriz, qtdLinhas);
+
+
 
     
 
-
+    
+    for(i=0; i<qtdLinhas; i++){
+        free(matriz[i].pont);
+    }
+    free(matriz);
     return 0;
 }
