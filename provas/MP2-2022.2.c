@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct{
     char Placa[6];
@@ -56,33 +57,54 @@ Filial *cadastrar_caminhao(Filial *filiais, Caminhao caminhao, int codigo_filial
     return filiais;
 }
 
-Caminhao remover_caminhao(Filial **filiais, int codigo_filial){
+Caminhao remover_caminhao(Filial *filiais, int codigo_filial){
     int i=0, j=0;
     Caminhao *auxCam=NULL;
-    auxCam = (*filiais)[codigo_filial].caminhao;
+    auxCam = filiais[codigo_filial].caminhao;
     Caminhao camREMOVIDO;
-    camREMOVIDO = (*filiais)[codigo_filial].caminhao[(*filiais)[codigo_filial].n_caminhao-1];
-    (*filiais)[codigo_filial].caminhao = (Caminhao *) realloc(auxCam, ((*filiais)[codigo_filial].n_caminhao-1)*sizeof(Caminhao));
+    camREMOVIDO = filiais[codigo_filial].caminhao[filiais[codigo_filial].n_caminhao-1];
+    /*(*filiais)[codigo_filial].caminhao = (Caminhao *) realloc(auxCam, ((*filiais)[codigo_filial].n_caminhao-1)*sizeof(Caminhao));
     if((*filiais)[codigo_filial].caminhao==NULL){
         printf("Problema de alocacao!\n");
-        limpar(filiais);
+        limpar(*filiais);
         exit(1);
-    }
-    (*filiais)[codigo_filial].n_caminhao--;
+    }*/
+    filiais[codigo_filial].n_caminhao--;
     return camREMOVIDO;
 }
 
-void realizar_entrega(Filial *filiais, Produto produto, int n_filiais){
+Filial *realizar_entrega(Filial *filiais, Produto produto, int n_filiais){
     int i=0, j=0;
-    float menorDistIr=100000, menorDistVoltar=100000;
+    float menorDistIr2=10000000, menorDistVoltar2=10000000;
+    int indiceMenorDistIda=0, indiceMenorDistVolta;
+    Caminhao *auxCam=NULL;
+    Caminhao caminhaoREMOVIDO;
     for(i=0; i<n_filiais; i++){
-        if(filiais[i].loc_x*filiais[i].loc_x + filiais[i].loc_y*filiais[i].loc_y < menorDistIr){
-            
+        if(filiais[i].n_caminhao>0){
+            if((filiais[i].loc_x - produto.origem_x)*(filiais[i].loc_x - produto.origem_x) + (filiais[i].loc_y - produto.origem_y)*(filiais[i].loc_y - produto.origem_y) < menorDistIr2){
+                menorDistIr2 = (filiais[i].loc_x - produto.origem_x)*(filiais[i].loc_x - produto.origem_x) + (filiais[i].loc_y - produto.origem_y)*(filiais[i].loc_y - produto.origem_y);
+                indiceMenorDistIda=i;
+            }
+            if((filiais[i].loc_x - produto.destino_x)*(filiais[i].loc_x - produto.destino_x) + (filiais[i].loc_y - produto.destino_y)*(filiais[i].loc_y - produto.destino_y) < menorDistVoltar2){
+                menorDistVoltar2 = (filiais[i].loc_x - produto.destino_x)*(filiais[i].loc_x - produto.destino_x) + (filiais[i].loc_y - produto.destino_y)*(filiais[i].loc_y - produto.destino_y);
+                indiceMenorDistVolta=i;
+            }
         }
     }
+    //printf("Menor distancia da IDA ao quad: %.2f\n", menorDistIr2);
+    //printf("Menor distancia da VOLTA ao quad: %.2f\n", menorDistVoltar2);
 
 
-
+    caminhaoREMOVIDO = remover_caminhao(filiais, indiceMenorDistIda);
+    //printf("O caminhao de placa %s saiu da filial %d.\n", caminhaoREMOVIDO.Placa, indiceMenorDistIda);
+    //printf("Esse caminhao foi guardado na filial %d.\n", indiceMenorDistVolta);
+    
+    auxCam = filiais[indiceMenorDistVolta].caminhao;
+    filiais[indiceMenorDistVolta].caminhao = (Caminhao *) realloc(auxCam, (filiais[indiceMenorDistVolta].n_caminhao+1)*sizeof(Caminhao));
+    filiais[indiceMenorDistVolta].caminhao[filiais[indiceMenorDistVolta].n_caminhao] = caminhaoREMOVIDO;
+    filiais[indiceMenorDistVolta].n_caminhao++;
+    printf("Entrega realizada com sucesso!");
+    return filiais;
 }
 
 void imprimir_filiais(Filial *filiais, int n_filiais){
@@ -135,14 +157,13 @@ int main(){
             printf("Digite a coordenada y do destino: \n");
             scanf("%f", &produto.destino_y);
 
-            realizar_entrega(filial, produto, n_filiais);
+            filial = realizar_entrega(filial, produto, n_filiais);
 
 
 
             /*printf("Digite o codigo da filial: \n");
             scanf("%d", &teste);
-            caminhaoREMOVIDO = remover_caminhao(&filial, teste);
-            printf("Placa do caminhao removido: %s\n", caminhaoREMOVIDO.Placa);*/
+            */
         }
         else if(comando==4){
             imprimir_filiais(filial, n_filiais);
