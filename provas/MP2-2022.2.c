@@ -69,7 +69,7 @@ Caminhao remover_caminhao(Filial *filiais, int codigo_filial){
         limpar(*filiais);
         exit(1);
     }*/
-    filiais[codigo_filial].n_caminhao--;
+    
     return camREMOVIDO;
 }
 
@@ -85,10 +85,10 @@ Filial *realizar_entrega(Filial *filiais, Produto produto, int n_filiais){
                 menorDistIr2 = (filiais[i].loc_x - produto.origem_x)*(filiais[i].loc_x - produto.origem_x) + (filiais[i].loc_y - produto.origem_y)*(filiais[i].loc_y - produto.origem_y);
                 indiceMenorDistIda=i;
             }
-            if((filiais[i].loc_x - produto.destino_x)*(filiais[i].loc_x - produto.destino_x) + (filiais[i].loc_y - produto.destino_y)*(filiais[i].loc_y - produto.destino_y) < menorDistVoltar2){
-                menorDistVoltar2 = (filiais[i].loc_x - produto.destino_x)*(filiais[i].loc_x - produto.destino_x) + (filiais[i].loc_y - produto.destino_y)*(filiais[i].loc_y - produto.destino_y);
-                indiceMenorDistVolta=i;
-            }
+        }
+        if((filiais[i].loc_x - produto.destino_x)*(filiais[i].loc_x - produto.destino_x) + (filiais[i].loc_y - produto.destino_y)*(filiais[i].loc_y - produto.destino_y) < menorDistVoltar2){
+            menorDistVoltar2 = (filiais[i].loc_x - produto.destino_x)*(filiais[i].loc_x - produto.destino_x) + (filiais[i].loc_y - produto.destino_y)*(filiais[i].loc_y - produto.destino_y);
+            indiceMenorDistVolta=i;
         }
     }
     //printf("Menor distancia da IDA ao quad: %.2f\n", menorDistIr2);
@@ -96,6 +96,7 @@ Filial *realizar_entrega(Filial *filiais, Produto produto, int n_filiais){
 
 
     caminhaoREMOVIDO = remover_caminhao(filiais, indiceMenorDistIda);
+    filiais[indiceMenorDistIda].n_caminhao--;
     //printf("O caminhao de placa %s saiu da filial %d.\n", caminhaoREMOVIDO.Placa, indiceMenorDistIda);
     //printf("Esse caminhao foi guardado na filial %d.\n", indiceMenorDistVolta);
     
@@ -103,7 +104,7 @@ Filial *realizar_entrega(Filial *filiais, Produto produto, int n_filiais){
     filiais[indiceMenorDistVolta].caminhao = (Caminhao *) realloc(auxCam, (filiais[indiceMenorDistVolta].n_caminhao+1)*sizeof(Caminhao));
     filiais[indiceMenorDistVolta].caminhao[filiais[indiceMenorDistVolta].n_caminhao] = caminhaoREMOVIDO;
     filiais[indiceMenorDistVolta].n_caminhao++;
-    printf("Entrega realizada com sucesso!");
+    
     return filiais;
 }
 
@@ -126,7 +127,7 @@ int main(){
     int filialADD;
     Caminhao caminhaoADD, caminhaoREMOVIDO;
     Filial *filial=NULL;
-    Produto produto;printf("Digite a : \n");
+    Produto produto;
     int n_filiais=0;
 
     int teste;
