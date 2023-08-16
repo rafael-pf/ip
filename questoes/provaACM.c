@@ -84,13 +84,21 @@ void salvaAlunos(Aluno *alunos, int qtdAlunos){
         exit(1);
     }
     int i=0;
+    int tamNOME;
+    int tamCPF;
+    fwrite(&qtdAlunos, sizeof(int), 1, arq);
     for(i=0; i<qtdAlunos; i++){
-        fwrite(&alunos[i], sizeof(Aluno), 1, arq);
-        /*for(int j=0; j<alunos[i].qtdNotas; j++){
+        tamNOME = strlen(alunos[i].nome)+1;
+        tamCPF = strlen(alunos[i].cpf)+1;
+        fwrite(&tamNOME, sizeof(int), 1, arq);
+        fwrite(&alunos[i].nome, sizeof(char), tamNOME, arq);
+        fwrite(&tamCPF, sizeof(int), 1, arq);
+        fwrite(&alunos[i].cpf, sizeof(char), tamCPF, arq);
+        fwrite(&alunos[i].qtdNotas, sizeof(int), 1, arq);
+        for(int j=0; j<alunos[i].qtdNotas; j++){
             fwrite(&alunos[i].notas[j], sizeof(float), 1, arq);
-        }*/
+        }
     }
-
     fclose(arq);
 }
 
