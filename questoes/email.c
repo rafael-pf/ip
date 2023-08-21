@@ -11,7 +11,8 @@ typedef struct{
 typedef struct{
     char nome[50];
     char senha[50];
-    int qtdRecebidos, qtdEnviados;
+    int qtdRecebidos; 
+    int qtdEnviados;
     Email *recebidos;
     Email *enviados;
 } Usuario;
@@ -122,15 +123,17 @@ void enviarEmail(char *nomeRemetente){
 void verRecebidos(Usuario usuario){
     FILE *arq;
     Usuario procura;
+    int tag_achei=0;
     arq = fopen("users.bin", "rb");
     if(arq == NULL){
         printf("Problema ao abrir arquivo!\n");
         exit(1);
     }
-    while(!feof(arq)){
+    while(!feof(arq) && tag_achei==0){
         fread(&procura, sizeof(Usuario), 1, arq);
         if(strcmp(procura.nome, usuario.nome)==0){
-            if(procura.qtdRecebidos==0){
+            tag_achei=1;
+            if(procura.qtdRecebidos==0 || procura.recebidos==NULL){
                 printf("Voce nao possui emails recebidos.\n");
                 break;
             }
@@ -148,15 +151,17 @@ void verRecebidos(Usuario usuario){
 void verEnviados(Usuario usuario){
     FILE *arq;
     Usuario procura;
+    int tag_achei=0;
     arq = fopen("users.bin", "rb");
     if(arq == NULL){
         printf("Problema ao abrir arquivo!\n");
         exit(1);
     }
-    while(!feof(arq)){
+    while(!feof(arq)&&tag_achei==0){
         fread(&procura, sizeof(Usuario), 1, arq);
         if(strcmp(procura.nome, usuario.nome)==0){
-            if(procura.qtdEnviados==0){
+            tag_achei=1;
+            if(procura.qtdEnviados==0 || procura.enviados==NULL){
                 printf("Voce nao possui emails enviados.\n");
                 break;
             }
