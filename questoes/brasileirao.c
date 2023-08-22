@@ -36,7 +36,7 @@ Partida *carregaPartidas(int *qtdPartidas){
         aux = partidas;
         partidas = (Partida *) realloc(aux, ((*qtdPartidas)+1)*sizeof(Partida));
         if(partidas == NULL){ printf("Problema de alocacao!\n"); free(aux); exit(1);}
-        fscanf(arq, " %s %d X %d %s ", nomeC, &golsC, &golsV, nomeV);
+        fscanf(arq, " %49[^ 0-9] %d X %d %49[^\n] ", nomeC, &golsC, &golsV, nomeV);
         strcpy(partidas[*qtdPartidas].timeC, nomeC);
         partidas[*qtdPartidas].golsC = golsC;
         strcpy(partidas[*qtdPartidas].timeV, nomeV);
@@ -48,31 +48,94 @@ Partida *carregaPartidas(int *qtdPartidas){
 }
 
 void geraTabela(Partida *partidas, int qtdPartidas){
-    // Time *times=NULL;
-    // Time *aux;
-    // int qtdTimes=0;
-    // times = (Time *) malloc((qtdTimes+2)*sizeof(Time));
-    // if(times == NULL){ printf("Problema de alocacao!\n"); free(partidas); exit(1); }
-    // strcpy(times[qtdTimes].nome, partidas[0].timeC);
-    // strcpy(times[qtdTimes+1].nome, partidas[0].timeV);
-    // if(partidas[0].golsC>partidas[0].golsV){
-    //     times[qtdTimes].pts=3;
-    //     times[qtdTimes].vit=1;
-    //     times[qtdTimes+1].pts=0;
-    // }
-    // else if(partidas[0].golsV>partidas[0].golsC){
-
-    // }
-    // else{
-
-    // }
+    Time *times=NULL;
+    Time *aux;
+    int qtdTimes=0, tag_acheiC=0, tag_acheiV=0;
+    for(int i=0; i<qtdPartidas; i++){
+        tag_acheiC=0;
+        tag_acheiV=0;
+        for(int j=0; j<qtdTimes; j++){
+            if(strcmp(partidas[i].timeC, times[j].nome)==0){
+                tag_acheiC=1;
+                times[j].pj+=1;
+                if(partidas[i].golsC>partidas[i].golsV) {times[j].pts+=3; times[j].vit+=1; times[j].e+=0; times[j].der+=0; times[j].gp+=partidas[i].golsC; times[j].gc+=partidas[i].golsV; times[j].sg += partidas[i].golsC - partidas[i].golsV; }
+                else if(partidas[i].golsC<partidas[i].golsV) {times[j].pts+=0; times[j].vit+=0; times[j].e+=0; times[j].der+=1; times[j].gp+=partidas[i].golsC; times[j].gc+=partidas[i].golsV; times[j].sg += partidas[i].golsC - partidas[i].golsV; }
+                else {times[j].pts+=1; times[j].vit+=0; times[j].e+=1; times[j].der+=0; times[j].gp+=partidas[i].golsC; times[j].gc+=partidas[i].golsV; times[j].sg += partidas[i].golsC - partidas[i].golsV; }
+            }
+            else if(strcmp(partidas[i].timeV, times[j].nome)==0){
+                tag_acheiV=1;
+                times[j].pj+=1;
+                if(partidas[i].golsC<partidas[i].golsV) {times[j].pts+=3; times[j].vit+=1; times[j].e+=0; times[j].der+=0; times[j].gp+=partidas[i].golsV; times[j].gc+=partidas[i].golsC; times[j].sg += partidas[i].golsV - partidas[i].golsC; }
+                else if(partidas[i].golsC>partidas[i].golsV) {times[j].pts+=0; times[j].vit+=0; times[j].e+=0; times[j].der+=1; times[j].gp+=partidas[i].golsV; times[j].gc+=partidas[i].golsC; times[j].sg += partidas[i].golsV - partidas[i].golsC; }
+                else {times[j].pts+=1; times[j].vit+=0; times[j].e+=1; times[j].der+=0; times[j].gp+=partidas[i].golsV; times[j].gc+=partidas[i].golsC; times[j].sg += partidas[i].golsV - partidas[i].golsC; }
+            }
+        }
+        if(tag_acheiC==0){
+            aux = times;
+            times = (Time *) realloc(aux, (qtdTimes+1)*sizeof(Time));
+            strcpy(times[qtdTimes].nome, partidas[i].timeC);
+            times[qtdTimes].pj=1;
+            if(partidas[i].golsC>partidas[i].golsV) {times[qtdTimes].pts=3; times[qtdTimes].vit=1; times[qtdTimes].e=0; times[qtdTimes].der=0; times[qtdTimes].gp=partidas[i].golsC; times[qtdTimes].gc=partidas[i].golsV; times[qtdTimes].sg = partidas[i].golsC - partidas[i].golsV; }
+            else if(partidas[i].golsC<partidas[i].golsV) {times[qtdTimes].pts=0; times[qtdTimes].vit=0; times[qtdTimes].e=0; times[qtdTimes].der=1; times[qtdTimes].gp=partidas[i].golsC; times[qtdTimes].gc=partidas[i].golsV; times[qtdTimes].sg = partidas[i].golsC - partidas[i].golsV; }
+            else {times[qtdTimes].pts=1; times[qtdTimes].vit=0; times[qtdTimes].e=1; times[qtdTimes].der=0; times[qtdTimes].gp=partidas[i].golsC; times[qtdTimes].gc=partidas[i].golsV; times[qtdTimes].sg = partidas[i].golsC - partidas[i].golsV; }
+            qtdTimes++;
+        }
+        if(tag_acheiV==0){
+            aux = times;
+            times = (Time *) realloc(aux, (qtdTimes+1)*sizeof(Time));
+            strcpy(times[qtdTimes].nome, partidas[i].timeV);
+            times[qtdTimes].pj=1;
+            if(partidas[i].golsC<partidas[i].golsV) {times[qtdTimes].pts=3; times[qtdTimes].vit=1; times[qtdTimes].e=0; times[qtdTimes].der=0; times[qtdTimes].gp=partidas[i].golsV; times[qtdTimes].gc=partidas[i].golsC; times[qtdTimes].sg = partidas[i].golsV - partidas[i].golsC; }
+            else if(partidas[i].golsC>partidas[i].golsV) {times[qtdTimes].pts=0; times[qtdTimes].vit=0; times[qtdTimes].e=0; times[qtdTimes].der=1; times[qtdTimes].gp=partidas[i].golsV; times[qtdTimes].gc=partidas[i].golsC; times[qtdTimes].sg = partidas[i].golsV - partidas[i].golsC; }
+            else {times[qtdTimes].pts=1; times[qtdTimes].vit=0; times[qtdTimes].e=1; times[qtdTimes].der=0; times[qtdTimes].gp=partidas[i].golsV; times[qtdTimes].gc=partidas[i].golsC; times[qtdTimes].sg = partidas[i].golsV - partidas[i].golsC; }
+            qtdTimes++;
+        }   
+    }
+    Time auxTroca;
+    for(int i=0; i<qtdTimes; i++){
+        for(int j=i+1; j<qtdTimes; j++){
+            if(times[i].pts<times[j].pts){
+                auxTroca = times[i];
+                times[i] = times[j];
+                times[j] = auxTroca;
+            }
+            if(times[i].pts==times[j].pts){
+                if(times[i].vit<times[j].vit){
+                    auxTroca = times[i];
+                    times[i] = times[j];
+                    times[j] = auxTroca;
+                }
+                if(times[i].vit==times[j].vit){
+                    if(times[i].sg<times[i].sg){
+                        auxTroca = times[i];
+                        times[i] = times[j];
+                        times[j] = auxTroca;
+                    }
+                    if(times[i].sg==times[j].sg){
+                        if(strcmp(times[i].nome, times[i].nome)>0){
+                            auxTroca = times[i];
+                            times[i] = times[j];
+                            times[j] = auxTroca;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    printf("POS \tTime\t\t\tPJ\tPTS\tVIT\tE\tDER\tGP\tGC\tSG\n");
+    for(int i=0; i<qtdTimes; i++){
+        if(strlen(times[i].nome)<=5){
+            printf("%d.\t%s    \t\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", i+1,times[i].nome, times[i].pj, times[i].pts, times[i].vit, times[i].e, times[i].der, times[i].gp, times[i].gc, times[i].sg);
+        }
+        else
+            printf("%d.\t%s\t\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", i+1,times[i].nome, times[i].pj, times[i].pts, times[i].vit, times[i].e, times[i].der, times[i].gp, times[i].gc, times[i].sg);
+    }
 }
 
 int main(){
     Partida *partidas=NULL;
     int qtdPartidas=0;
     int comando=0;
-
     do{
         printf("=============MENU=============\n");
         printf("Que operacao deseja realizar?\n");
@@ -103,6 +166,6 @@ int main(){
     // for(int i=0; i<qtdPartidas; i++){
     //     printf("\t%s %d X %d %s\n", partidas[i].timeC, partidas[i].golsC, partidas[i].golsV, partidas[i].timeV);
     // }
-
+    free(partidas);
     return 0;
 }
